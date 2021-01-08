@@ -19,6 +19,7 @@ By using this connector you will have the ability to create one of the following
 * Manage permissions (grant / revoke)
   * Group Membership
   * Licenses (Statically defined)
+  * Classroom student Membership
 
 
 ## Setting up the Google API access
