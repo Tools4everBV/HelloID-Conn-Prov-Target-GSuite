@@ -57,3 +57,34 @@ foreach($sku in $licensing)
 {
     Write-Output $sku | ConvertTo-Json -Depth 10
 }
+
+#Classroom
+$courses = @();
+$parameters = "";
+$baseGetCoursesUri = "https://classroom.googleapis.com/v1/courses";
+do 
+{
+    $courseResponse = $null;
+    $getCoursesUri = $baseGetCoursesUri + $getCourseParams;
+
+    $courseResponse = Invoke-RestMethod -Uri $getCoursesUri -Method GET -Headers $authorization;
+    $getCourseParams = "?pageToken=" + $courseResponse.nextPageToken
+
+    $courses += $courseResponse.courses;
+} while ($courseResponse.nextPageToken -ne $null)
+
+Write-Verbose -Verbose "Total Courses $($courses.count)";
+
+foreach($course in $courses)
+{
+    $row = @{
+                DisplayName = $course.name;
+                Identification = @{
+                                    Id = $course.id;
+                                    DisplayName = $course.name;
+                                    Type = "Classroom";
+                }
+    };
+ 
+    Write-Output $row | ConvertTo-Json -Depth 10
+}

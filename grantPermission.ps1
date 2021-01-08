@@ -63,6 +63,13 @@ if(-Not($dryRun -eq $True)) {
             $success = $True;
             $auditMessage = " successfully";
         }
+		elseif($pRef.Type -eq "Classroom")
+		{
+			$addStudentToCourseParams = @{
+				userId = $userResponse[0].primaryEmail;
+			};
+			Invoke-RestMethod -Uri "https://classroom.googleapis.com/v1/courses/$($pRef.id)/students" -Method POST -Headers $authorization -Body ($addStudentToCourseParams | ConvertTo-Json);
+		}
         else
         {
             $success = $False;
