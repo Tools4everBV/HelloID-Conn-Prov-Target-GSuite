@@ -49,7 +49,7 @@ if(-Not($dryRun -eq $True)) {
         }
 		elseif($pRef.Type -eq "Classroom")
 		{
-			Invoke-RestMethod -Uri "https://classroom.googleapis.com/v1/courses/$($pRef.id)/students/$($userResponse[0].primaryEmail)" -Method DELETE -Headers $authorization;
+			$response = Invoke-RestMethod -Uri "https://classroom.googleapis.com/v1/courses/$($pRef.id)/students/$($userResponse[0].primaryEmail)" -Method DELETE -Headers $authorization;
 			$success = $True;
             $auditMessage = " successfully";
         }

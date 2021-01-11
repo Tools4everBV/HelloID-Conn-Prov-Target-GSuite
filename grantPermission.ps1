@@ -70,7 +70,7 @@ if(-Not($dryRun -eq $True)) {
 			$addStudentToCourseParams = @{
 				userId = $userResponse[0].primaryEmail;
 			};
-			Invoke-RestMethod -Uri "https://classroom.googleapis.com/v1/courses/$($pRef.id)/students" -Method POST -Headers $authorization -Body ($addStudentToCourseParams | ConvertTo-Json);
+			$response = Invoke-RestMethod -Uri "https://classroom.googleapis.com/v1/courses/$($pRef.id)/students" -Method POST -Headers $authorization -Body ($addStudentToCourseParams | ConvertTo-Json);
 			$success = $True;
             $auditMessage = " successfully";
 		}
@@ -88,7 +88,7 @@ if(-Not($dryRun -eq $True)) {
                 $success = $True;
                 $auditMessage = " successfully (already exists)";
             }
-            if($_.Exception.Response.StatusCode.value__ -eq 412)
+            elseif($_.Exception.Response.StatusCode.value__ -eq 412)
             {
                 $success = $True;
                 $auditMessage = " successfully (already assigned)";
