@@ -65,10 +65,14 @@ if(-Not($dryRun -eq $True)) {
         }
 		elseif($pRef.Type -eq "Classroom")
 		{
+			Write-Verbose -Verbose "Adding Classroom Permission"
+			
 			$addStudentToCourseParams = @{
 				userId = $userResponse[0].primaryEmail;
 			};
 			Invoke-RestMethod -Uri "https://classroom.googleapis.com/v1/courses/$($pRef.id)/students" -Method POST -Headers $authorization -Body ($addStudentToCourseParams | ConvertTo-Json);
+			$success = $True;
+            $auditMessage = " successfully";
 		}
         else
         {
